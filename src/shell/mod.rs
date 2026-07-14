@@ -115,7 +115,7 @@ impl Shell {
                         return true;
                     }
                     let output = Command::new(command).args(&tokens[1..]).output();
-                    println!("{}", String::from_utf8_lossy(&output.unwrap().stdout));
+                    print!("{}", String::from_utf8_lossy(&output.unwrap().stdout));
                     return true;
                 }
             }
