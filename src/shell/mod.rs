@@ -3,7 +3,6 @@ use std::{
     fs,
     io::{self, Write},
     path::Path,
-    str::SplitWhitespace,
     vec,
 };
 pub mod commands;
@@ -12,7 +11,7 @@ struct Command {
     name: String,
     description: String,
     num_of_args: usize,
-    func: fn(&mut Shell, & vec::Vec<String>),
+    func: fn(&mut Shell, & vec::Vec<&str>),
 }
 pub struct Shell {
     path: String,
@@ -73,7 +72,7 @@ impl Shell {
             let mut input = String::new();
             io::stdin().read_line(&mut input).unwrap();
             let input = input.trim();
-            let tokens  = input.split_whitespace().map(String::from).collect();
+            let tokens:Vec<&str>  = input.split_whitespace().collect();
 
             let found = self.find_in_builtins(&tokens);
             if found {
@@ -87,7 +86,7 @@ impl Shell {
             println!("{}: command not found", tokens[0]);
         }
     }
-    pub fn find_in_builtins(&mut self, tokens: &Vec<String>) -> bool {
+    pub fn find_in_builtins(&mut self, tokens: &Vec<&str>) -> bool {
         let command = tokens[0];
         if let Some(cmd) = self.commands.get(&command) {
             (cmd.func)(self, tokens);
@@ -96,7 +95,7 @@ impl Shell {
         false
     }
 
-    pub fn find_in_path(&self, tokens: &Vec<String>) -> bool {
+    pub fn find_in_path(&self, tokens: &Vec<&str>) -> bool {
         let command = tokens[0];
         for dir in &self.dirs {
             let path = Path::new(dir).join(&command);
