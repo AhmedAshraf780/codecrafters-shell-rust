@@ -97,9 +97,9 @@ impl Shell {
 
     pub fn find_in_path(&self, tokens: &Vec<&str>) -> bool {
         let command = tokens[0];
+        let arg = tokens[1];
         for dir in &self.dirs {
-            let path = Path::new(dir).join(&command);
-            println!("{}", path.display());
+            let path = Path::new(dir).join(&arg);
 
             if let Ok(metadata) = fs::metadata(&path) {
                 let mode = metadata.permissions().mode();
