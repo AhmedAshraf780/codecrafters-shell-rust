@@ -16,7 +16,7 @@ fn main() {
             match command {
                 "echo" => {
                     for word in words {
-                        print!("{}", word);
+                        print!("{} ", word);
                     }
                     println!();
                 }
