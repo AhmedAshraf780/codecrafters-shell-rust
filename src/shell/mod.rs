@@ -1,8 +1,11 @@
+use std::os::unix::fs::PermissionsExt;
 use std::{
+    fs,
     io::{self, Write},
+    path::Path,
+    str::SplitWhitespace,
     vec,
 };
-
 pub mod commands;
 
 struct Command {
@@ -12,12 +15,16 @@ struct Command {
     func: fn(&mut Shell, &mut vec::Vec<String>),
 }
 pub struct Shell {
+    path: String,
+    dirs: vec::Vec<String>,
     commands: std::collections::HashMap<String, Command>,
 }
 
 impl Shell {
-    pub fn new() -> Shell {
+    pub fn new(path: &mut String) -> Shell {
         Shell {
+            path: path.clone(),
+            dirs: path.split(':').map(|s| s.to_string()).collect(),
             commands: std::collections::HashMap::new(),
         }
     }
@@ -66,19 +73,45 @@ impl Shell {
             let mut input = String::new();
             io::stdin().read_line(&mut input).unwrap();
             let input = input.trim();
+            let mut tokens = input.split(" ").collect::<Vec<String>>();
 
-            let mut words = input.split_whitespace();
-            if let Some(command) = words.next() {
-                if let Some(cmd) = self.commands.get(command) {
-                    let mut args = vec::Vec::new();
-                    for word in words {
-                        args.push(word.to_string());
+            let found = self.find_in_builtins(&mut tokens);
+            if found {
+                continue;
+            }
+
+            let found = self.find_in_path(&mut tokens);
+            if found {
+                continue;
+            }
+            println!("{}: command not found", tokens[0]);
+        }
+    }
+    pub fn find_in_builtins(&mut self, tokens: &mut Vec<String>) -> bool {
+        let command = tokens[0];
+        if let Some(cmd) = self.commands.get(&command) {
+            (cmd.func)(self, tokens);
+            return true;
+        }
+        return false;
+    }
+
+    pub fn find_in_path(&self, tokens: &mut Vec<String>) -> bool {
+        let command = tokens[0];
+        for dir in &self.dirs {
+            let path = Path::new(dir).join(&command);
+
+            if let Ok(metadata) = fs::metadata(&path) {
+                let mode = metadata.permissions().mode();
+                if metadata.is_file() && (mode & 0o111 != 0) {
+                    if command == "type" {
+                        format!("{} is {}\n",tokens[1],path.to_str());
+                        return true;
                     }
-                    (cmd.func)(self, &mut args);
-                } else {
-                    println!("{}: command not found", command);
+                    return true;
                 }
             }
         }
+        false
     }
 }

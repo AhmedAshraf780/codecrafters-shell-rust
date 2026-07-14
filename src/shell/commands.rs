@@ -8,14 +8,18 @@ pub fn echo_func(_shell: &mut shell::Shell, args: &mut vec::Vec<String>) {
     return;
 }
 
-pub fn type_func(shell: &mut shell::Shell, args: &mut vec::Vec<String>) {
+pub fn type_func(shell: &mut shell::Shell, tokens: &mut vec::Vec<String>) {
     // Implementation for type command
-    let arg = args[0].clone();
+    let arg = tokens[1];
     let command = shell.commands.get(&arg);
     if let Some(cmd) = command {
         println!("{}", cmd.description);
     } else {
-        println!("{}: not found", arg);
+        let found = shell.find_in_path(tokens);
+        if found {
+            return
+        }
     }
+    println!("{}: not found", arg);
     return;
 }
