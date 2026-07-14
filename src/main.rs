@@ -21,6 +21,7 @@ fn main() {
                     println!();
                 }
                 "exit" => exit(0),
+                "type" => println!("{} is a shell builtin", words.next().unwrap_or(&"")),
                 _ => println!("{}: command not found", command),
             }
             io::stdout().flush().unwrap();
