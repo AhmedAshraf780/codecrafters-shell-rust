@@ -84,7 +84,6 @@ impl Shell {
 
             let found = self.find_in_path(&tokens);
             if found {
-                println!("Gotem");
                 continue;
             }
             println!("{}: command not found", tokens[0]);
@@ -116,7 +115,7 @@ impl Shell {
                         return true;
                     }
                     let output = Command::new(command).args(&tokens[1..]).output();
-                    println!("{}\n", String::from_utf8_lossy(&output.unwrap().stdout));
+                    println!("{}", String::from_utf8_lossy(&output.unwrap().stdout));
                     return true;
                 }
             }
