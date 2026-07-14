@@ -14,12 +14,12 @@ pub fn type_func(shell: &mut shell::Shell, tokens: & vec::Vec<&str>) {
     let command = shell.commands.get(&arg);
     if let Some(cmd) = command {
         println!("{}", cmd.description);
+        return
     } else {
         let found = shell.find_in_path(tokens);
         if found {
             return
         }
     }
-    println!("{}: not found", arg);
-    return;
+    println!("{}: not found", arg)
 }
