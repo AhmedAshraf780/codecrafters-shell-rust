@@ -114,7 +114,7 @@ impl Shell {
                         println!("{} is {}", p, path.display());
                         return true;
                     }
-                    let output = Command::new(path).args(tokens[1..]).output();
+                    let output = Command::new(path).args(&tokens[1..]).output();
                     println!("{:?}", output);
                     return true;
                 }
