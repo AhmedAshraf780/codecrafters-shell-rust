@@ -5,9 +5,12 @@ use std::{
     path::Path,
     vec,
 };
+use std::env::consts::OS;
+use std::process::Command;
+
 pub mod commands;
 
-struct Command {
+struct ShellCommand {
     name: String,
     description: String,
     num_of_args: usize,
@@ -16,7 +19,7 @@ struct Command {
 pub struct Shell {
     path: String,
     dirs: vec::Vec<String>,
-    commands: std::collections::HashMap<&'static str, Command>,
+    commands: std::collections::HashMap<&'static str, ShellCommand>,
 }
 
 impl Shell {
@@ -31,7 +34,7 @@ impl Shell {
         // echo command
         self.commands.insert(
             "echo",
-            Command {
+            ShellCommand {
                 name: String::from("echo"),
                 description: String::from("echo is a shell builtin"),
                 num_of_args: 1,
@@ -42,7 +45,7 @@ impl Shell {
         // exit command
         self.commands.insert(
             "exit",
-            Command {
+            ShellCommand {
                 name: String::from("exit"),
                 description: String::from("exit is a shell builtin"),
                 num_of_args: 0,
@@ -55,7 +58,7 @@ impl Shell {
         // type command
         self.commands.insert(
             "type",
-            Command {
+            ShellCommand {
                 name: String::from("type"),
                 description: String::from("type is a shell builtin"),
                 num_of_args: 1,
@@ -111,6 +114,8 @@ impl Shell {
                         println!("{} is {}", p, path.display());
                         return true;
                     }
+                    let output = Command::new(path).args(tokens[1..]).output();
+                    println!("{:?}", output);
                     return true;
                 }
             }
