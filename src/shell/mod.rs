@@ -99,6 +99,7 @@ impl Shell {
         let command = tokens[0];
         for dir in &self.dirs {
             let path = Path::new(dir).join(&command);
+            println!("{}", path.display());
 
             if let Ok(metadata) = fs::metadata(&path) {
                 let mode = metadata.permissions().mode();
