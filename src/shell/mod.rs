@@ -12,7 +12,7 @@ struct Command {
     name: String,
     description: String,
     num_of_args: usize,
-    func: fn(&mut Shell, &mut vec::Vec<String>),
+    func: fn(&mut Shell, & vec::Vec<String>),
 }
 pub struct Shell {
     path: String,
@@ -73,30 +73,30 @@ impl Shell {
             let mut input = String::new();
             io::stdin().read_line(&mut input).unwrap();
             let input = input.trim();
-            let mut tokens = input.split(" ").collect::<Vec<String>>();
+            let tokens  = input.split_whitespace().map(String::from).collect();
 
-            let found = self.find_in_builtins(&mut tokens);
+            let found = self.find_in_builtins(&tokens);
             if found {
                 continue;
             }
 
-            let found = self.find_in_path(&mut tokens);
+            let found = self.find_in_path(&tokens);
             if found {
                 continue;
             }
             println!("{}: command not found", tokens[0]);
         }
     }
-    pub fn find_in_builtins(&mut self, tokens: &mut Vec<String>) -> bool {
+    pub fn find_in_builtins(&mut self, tokens: &Vec<String>) -> bool {
         let command = tokens[0];
         if let Some(cmd) = self.commands.get(&command) {
             (cmd.func)(self, tokens);
             return true;
         }
-        return false;
+        false
     }
 
-    pub fn find_in_path(&self, tokens: &mut Vec<String>) -> bool {
+    pub fn find_in_path(&self, tokens: &Vec<String>) -> bool {
         let command = tokens[0];
         for dir in &self.dirs {
             let path = Path::new(dir).join(&command);

@@ -2,13 +2,13 @@ use std::vec;
 
 use crate::shell;
 
-pub fn echo_func(_shell: &mut shell::Shell, args: &mut vec::Vec<String>) {
+pub fn echo_func(_shell: &mut shell::Shell, args: & vec::Vec<String>) {
     // Implementation for echo command
     println!("{}", args.join(" "));
     return;
 }
 
-pub fn type_func(shell: &mut shell::Shell, tokens: &mut vec::Vec<String>) {
+pub fn type_func(shell: &mut shell::Shell, tokens: & vec::Vec<String>) {
     // Implementation for type command
     let arg = tokens[1];
     let command = shell.commands.get(&arg);
