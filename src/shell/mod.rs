@@ -97,15 +97,18 @@ impl Shell {
 
     pub fn find_in_path(&self, tokens: &Vec<&str>) -> bool {
         let command = tokens[0];
-        let arg = tokens[1];
+        let mut  p = command;
+        if command == "type" {
+            p = tokens[1];
+        }
         for dir in &self.dirs {
-            let path = Path::new(dir).join(&arg);
+            let path = Path::new(dir).join(&p);
 
             if let Ok(metadata) = fs::metadata(&path) {
                 let mode = metadata.permissions().mode();
                 if metadata.is_file() && (mode & 0o111 != 0) {
                     if command == "type" {
-                        println!("{} is {}", tokens[1], path.display());
+                        println!("{} is {}", p, path.display());
                         return true;
                     }
                     return true;
