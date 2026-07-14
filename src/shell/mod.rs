@@ -84,6 +84,7 @@ impl Shell {
 
             let found = self.find_in_path(&tokens);
             if found {
+                println!("Gotem");
                 continue;
             }
             println!("{}: command not found", tokens[0]);
