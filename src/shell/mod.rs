@@ -114,7 +114,7 @@ impl Shell {
                         println!("{} is {}", p, path.display());
                         return true;
                     }
-                    let output = Command::new(path).args(&tokens[1..]).output();
+                    let output = Command::new(command).args(&tokens[1..]).output();
                     println!("{}", String::from_utf8_lossy(&output.unwrap().stdout));
                     return true;
                 }
