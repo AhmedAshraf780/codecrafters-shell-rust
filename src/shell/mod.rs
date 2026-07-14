@@ -105,7 +105,7 @@ impl Shell {
                 let mode = metadata.permissions().mode();
                 if metadata.is_file() && (mode & 0o111 != 0) {
                     if command == "type" {
-                        format!("{} is {}\n",tokens[1],path.to_str());
+                        println!("{} is {}", tokens[1], path.display());
                         return true;
                     }
                     return true;
