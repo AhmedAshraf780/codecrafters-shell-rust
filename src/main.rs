@@ -1,3 +1,4 @@
+use std::fmt::format;
 #[allow(unused_imports)]
 use std::io::{self, Write};
 
@@ -7,5 +8,5 @@ fn main() {
     io::stdout().flush().unwrap();
     let mut input = String::new();
     io::stdin().read_line(&mut input).unwrap();
-    println!("{}: not found", input);
+    println!("{}: command not found", input);
 }
