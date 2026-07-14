@@ -16,8 +16,9 @@ fn main() {
             match command {
                 "echo" => {
                     for word in words {
-                        println!("{}", word);
+                        print!("{}", word);
                     }
+                    println!();
                 }
                 "exit" => exit(0),
                 _ => println!("{}: command not found", command),
