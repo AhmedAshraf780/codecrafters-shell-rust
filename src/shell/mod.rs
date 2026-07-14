@@ -16,7 +16,7 @@ struct Command {
 pub struct Shell {
     path: String,
     dirs: vec::Vec<String>,
-    commands: std::collections::HashMap<String, Command>,
+    commands: std::collections::HashMap<&'static str, Command>,
 }
 
 impl Shell {
@@ -30,7 +30,7 @@ impl Shell {
     fn register_builtins(&mut self) {
         // echo command
         self.commands.insert(
-            "echo".to_string(),
+            "echo",
             Command {
                 name: String::from("echo"),
                 description: String::from("echo is a shell builtin"),
@@ -41,7 +41,7 @@ impl Shell {
 
         // exit command
         self.commands.insert(
-            "exit".to_string(),
+            "exit",
             Command {
                 name: String::from("exit"),
                 description: String::from("exit is a shell builtin"),
@@ -54,7 +54,7 @@ impl Shell {
 
         // type command
         self.commands.insert(
-            "type".to_string(),
+            "type",
             Command {
                 name: String::from("type"),
                 description: String::from("type is a shell builtin"),
