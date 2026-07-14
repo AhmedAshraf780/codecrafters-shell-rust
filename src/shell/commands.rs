@@ -14,6 +14,8 @@ pub fn type_func(shell: &mut shell::Shell, args: &mut vec::Vec<String>) {
     let command = shell.commands.get(&arg);
     if let Some(cmd) = command {
         println!("{}", cmd.description);
+    } else {
+        println!("{}: not found", arg);
     }
     return;
 }
