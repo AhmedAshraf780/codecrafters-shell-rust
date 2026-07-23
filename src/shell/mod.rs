@@ -11,8 +11,8 @@ use std::process::Command;
 pub mod commands;
 
 struct ShellCommand {
-    name: String,
-    description: String,
+    name: &'static str,
+    description: &'static str,
     num_of_args: usize,
     func: fn(&mut Shell, & vec::Vec<&str>),
 }
@@ -35,8 +35,8 @@ impl Shell {
         self.commands.insert(
             "echo",
             ShellCommand {
-                name: String::from("echo"),
-                description: String::from("echo is a shell builtin"),
+                name:"echo" ,
+                description: "echo is a shell builtin",
                 num_of_args: 1,
                 func: commands::echo_func,
             },
@@ -46,8 +46,8 @@ impl Shell {
         self.commands.insert(
             "exit",
             ShellCommand {
-                name: String::from("exit"),
-                description: String::from("exit is a shell builtin"),
+                name: "exit",
+                description: "exit is a shell builtin",
                 num_of_args: 0,
                 func: |_shell, _args| {
                     std::process::exit(0);
@@ -59,9 +59,20 @@ impl Shell {
         self.commands.insert(
             "type",
             ShellCommand {
-                name: String::from("type"),
-                description: String::from("type is a shell builtin"),
+                name: "type",
+                description: "type is a shell builtin",
                 num_of_args: 1,
+                func: commands::type_func,
+            },
+        );
+
+        // pwd command
+        self.commands.insert(
+            "pwd",
+            ShellCommand {
+                name: "pwd",
+                description: "type is a shell builtin",
+                num_of_args: 0,
                 func: commands::type_func,
             },
         );

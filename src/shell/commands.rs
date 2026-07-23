@@ -23,3 +23,9 @@ pub fn type_func(shell: &mut shell::Shell, tokens: & vec::Vec<&str>) {
     }
     println!("{}: not found", arg)
 }
+
+pub fn pwd_func(_shell: &mut shell::Shell, args: & vec::Vec<&str>) {
+    let pwd = std::env::current_dir().unwrap();
+    println!("{}", pwd.display());
+    return;
+}
