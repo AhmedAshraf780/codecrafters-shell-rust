@@ -71,7 +71,7 @@ impl Shell {
             "pwd",
             ShellCommand {
                 name: "pwd",
-                description: "type is a shell builtin",
+                description: "pwd is a shell builtin",
                 num_of_args: 0,
                 func: commands::type_func,
             },
