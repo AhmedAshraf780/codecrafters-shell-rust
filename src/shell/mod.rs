@@ -73,7 +73,7 @@ impl Shell {
                 name: "pwd",
                 description: "pwd is a shell builtin",
                 num_of_args: 0,
-                func: commands::type_func,
+                func: commands::pwd_func,
             },
         );
     }
